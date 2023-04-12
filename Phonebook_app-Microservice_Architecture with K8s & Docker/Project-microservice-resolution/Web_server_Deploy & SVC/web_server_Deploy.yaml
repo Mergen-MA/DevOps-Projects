@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: web-deploy 
+  labels: 
+    app: phonebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phonebook   
+  template:
+    metadata:
+      labels:
+        app: phonebook 
+    spec:
+      containers:
+        - name: web-container
+          image: alpine 
+          #env method 1 ve 2 de.
+          ports:
+          - containerPort: 3001
+
+# # Method 3
+#           volumeMounts:
+#             - mountPath: /config/
+#               name: demo-config-volume
+#               readOnly: true
+#       volumes:
+#       - name: demo-config-volume
+#         configMap:
+#           name: demo-config
+#           items:
+#           - key: config 
+#             path: demo.yaml
+
+#Method 1
+          envFrom:
+            - configMapRef:
+                name: web_server-config
+
+# Method 2   
+          # env:
+          #   - name: GREETING 
+          #     #value: selam
+          #     valueFrom:
+          #       configMapKeyRef:
+          #         key: greeting 
+          #         name: demo-config 

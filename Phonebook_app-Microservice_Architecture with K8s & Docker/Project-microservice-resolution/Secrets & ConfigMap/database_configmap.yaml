@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  name: mysql-config
+data: 
+  MYSQL_DATABASE: MYSQL
+  MYSQL_DATABASE_HOST: ec2-instance 
+  MYSQL_DATABASE_DB: phonebook-db
