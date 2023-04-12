@@ -1,0 +1,5 @@
+FROM python:alpine
+COPY . /phoneapp
+WORKDIR /phoneapp
+RUN pip install -r requirements
+CMD python /app.py
