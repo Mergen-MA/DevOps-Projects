@@ -8,18 +8,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: phonebook   
+      app: webserver   
   template:
     metadata:
       labels:
-        app: phonebook 
+        app: webserver 
     spec:
       containers:
-        - name: web-container
-          image: alpine 
+        - name: clarusway/webserver13
+          image: webserver13 
           #env method 1 ve 2 de.
           ports:
-          - containerPort: 3001
+          - containerPort: 80
 
 # # Method 3
 #           volumeMounts:
@@ -37,7 +37,14 @@ spec:
 #Method 1
           envFrom:
             - configMapRef:
-                name: web_server-config
+                name: servers-config
+          resources:
+             memory: "200Mi"
+            cpu: "100m"
+          limits:
+            memory: "750Mi"
+            cpu: "750m"
+            
 
 # Method 2   
           # env:

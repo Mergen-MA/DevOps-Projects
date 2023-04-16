@@ -1,21 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: search-deploy
+  name: searchserver
   labels:
     app: phonebook
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: phonebook
+      app: searchserver
   template:
     metadata:
       labels:
-        app: phonebook
+        app: searchserver
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.14.2
+      - name: resultserver13
+        image: clarusway/resultserver13
         ports:
         - containerPort: 80
+         envFrom:
+          - secretRef:
+               name: mysecret
+        
+        envFrom:
+          - configMapRef:
+               name: mysql-config 
