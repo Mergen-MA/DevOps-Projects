@@ -4,6 +4,6 @@ metadata:
   name: mysql-config
 data: 
   MYSQL_PAASWORD: MYSQL
-  MYSQL_DATABASE_HOST: ec2-instance 
+  MYSQL_DATABASE_HOST: mysql-deploy        # end  point icin kullanilir. burda kullanilmaz
   MYSQL_DATABASE: phonebook-db
   MYSQL_USER: eguankom

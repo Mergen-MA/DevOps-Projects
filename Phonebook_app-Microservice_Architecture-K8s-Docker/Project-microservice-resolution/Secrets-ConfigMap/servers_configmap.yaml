@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: servers-config
 data: 
-  MYSQL_PAASWORD: MYSQL
-  MYSQL_DATABASE_HOST: ec2-instance 
+
+  MYSQL_DATABASE_HOST: mysql-svc
   MYSQL_DATABASE: phonebook-db
   MYSQL_USER: eguankom

@@ -19,10 +19,9 @@ spec:
         image: clarusway/resultserver13
         ports:
         - containerPort: 80
-         envFrom:
-          - secretRef:
-               name: mysecret
         
         envFrom:
           - configMapRef:
-               name: mysql-config 
+              name: mysql-config 
+        resources: {}
+          
