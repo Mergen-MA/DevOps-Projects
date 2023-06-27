@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: mysql-config
 data: 
-  MYSQL_PAASWORD: MYSQL
-  MYSQL_DATABASE_HOST: mysql-deploy        # end  point icin kullanilir. burda kullanilmaz
+  MYSQL_DATABASE_HOST: mysql-deploy        # endpoint icin kullanilir. burda kullanilmasi gerekmez aslinda
   MYSQL_DATABASE: phonebook-db
   MYSQL_USER: eguankom
