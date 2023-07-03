@@ -152,5 +152,12 @@ provisioner "remote-exec" {
     ]
   }
 
+output "controlnodeip" {
+  value = "aws_instance.control_node.public_ip"
+}
+
+output "privateips" {
+  value = "aws_instance.control_node.*.private_ip"
+}
 
 }
