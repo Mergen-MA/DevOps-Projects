@@ -58,3 +58,59 @@ resource "aws_iam_role" "ec2full" {
   managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonEC2FullAccess"]
 }
 
+resource "aws_iam_instance_profile" "ec2full" {
+    name = "projectec2full-${var.user}"
+    role = aws_iam_role.ec2full.name
+}
+
+data "aws_vpc" "default" {
+    default = true
+}
+
+resource "aws_security_group" "tf-sec-gr" {
+  name        = "${var.mysecgr}-${var.user}"
+  vpc_id      = data.aws_vpc.default.id
+  tags = {
+    Name = var.mysecgr
+  }
+
+  ingress {
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+    ingress {
+    from_port        = 5000
+    to_port          = 5000
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+    ingress {
+    from_port        = 3000
+    to_port          = 3000
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+    ingress {
+    from_port        = 5432
+    to_port          = 5432
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+}
