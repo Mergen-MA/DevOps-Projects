@@ -24,3 +24,17 @@ resource "aws_instance" "nodes" {
         stack = "ansible-project"
     }
 }
+
+resource "aws_instance" "nodes" {
+    ami = var.myami
+    instance_type = var.instancetype
+    count = var.num
+    key_name = var.mykey
+    vpc_security_group_ids = [aws_security_group.tf-sec-gr.id]
+    tags = {
+        Name = "ansible_${element(var.tags, count.index )}"
+        stack = "ansible_project"
+        environment = "development"
+    }
+    user_data = file("userdata.sh")
+}
