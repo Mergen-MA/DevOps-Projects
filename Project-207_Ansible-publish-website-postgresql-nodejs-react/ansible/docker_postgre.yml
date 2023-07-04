@@ -1,0 +1,40 @@
+- name: install docker
+  gather_facts: No 
+  any_errors_fatal: true
+  hosts: _ansible_postgresql
+  become: true
+  vars_files:
+   - secret.yml
+  tasks:
+   - name: upgrade all packages
+     ansible.builtin.yum:
+       name: '*'
+       state: latest
+   
+   - name: Remove docker if it is installed from Centos repo 
+     ansible.builtin.yum:
+      name: 
+        - docker 
+        - docker-client
+        - docker-client-latest
+        - docker-common
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+      state: removed
+
+   - name: Install yum utils
+     ansible.builtin.yum:
+       name: "yum-utils"
+       state: latest
+   
+   - name: Add Docker repo 
+     ansible.builtin.get_url:
+       url: https://download.docker.com/linux/centos/docker-ce.repo
+       dest: /etc/yum.repos.d/docker-ce.repo
+
+   - name: Install Docker
+     ansible.builtin.package:
+       name: docker-ce
+       state: latest
