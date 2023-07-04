@@ -38,3 +38,62 @@
      ansible.builtin.package:
        name: docker-ce
        state: latest
+   
+   - name: Add user ec2-user to docker group
+     ansible.builtin.user:
+       name: ec2-user
+       groups: docker
+       append: yes
+
+   - name: Start Docker service 
+     ansible.builtin.service:
+       name: docker
+       state: started
+       enabled: yes
+
+   - name: copy files to the postgresql node 
+     ansible.builtin.copy: 
+       src: /home/ec2-user/ansible-project/postgres
+       dest: /home/ec2-user/postgresql
+
+   # Remove the container if it exists
+   - name: remove cla_postgre container
+     community.docker.docker_container:
+       name: cla_postgre
+       state: absent
+       force_kill: true       
+   
+    # Remove the image if it exists
+   - name: remove clarusway_postgre image
+     community.docker.docker_container:
+       name: clarusway_postgre
+       state: absent
+       force_kill: true    
+   
+   - name: build container image
+     community.docker.docker_image:
+       name: clarusway/postgre
+       build:
+         path: /home/ec2-user/postgresql
+       source: build
+       state: present 
+     register: image_info
+
+   - name: print the image info
+     ansible.builtin.debug:
+       var: image_info
+
+   - name: Launch postgresql docker container
+     community.docker.docker_container:
+       name: cla_postgre
+       image: clarusway/postgre
+       state: present
+       ports:
+       - "5432:5432"
+       env:
+         POSTGRES_PASSWORD: "{{ password}}"
+       volumes: 
+         - /db-data:/var/lib/postgresql/data
+     register: container_info
+
+     
